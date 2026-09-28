@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ACP Flashcards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+      // Replacements for the old Cordova plugins that are no longer bundled.
+      // (Capacitor supplies window.cordova, deviceready and navigator.app.exitApp itself.)
+      var cordova;
+      (function () {
+        // dialogs plugin -> native alert/confirm
+        if (!navigator.notification) {
+          navigator.notification = {
+            alert: function (message, callback, title) {
+              window.alert(message);
+              if (callback) callback();
+            },
+            confirm: function (message, callback) {
+              var ok = window.confirm(message);
+              if (callback) callback(ok ? 1 : 2);
+            }
+          };
+        }
+        // splashscreen plugin -> no-op (Android shows its own launch screen)
+        navigator.splashscreen = navigator.splashscreen || { show: function () {}, hide: function () {} };
+        // device plugin -> lets the app enable its own Android back-button handling
+        window.device = window.device || { platform: 'Android' };
+        // inappbrowser plugin -> external links open in the system browser
+        var nativeOpen = window.open;
+        window.open = function (url, target) {
+          if (target === '_system' || target === '_blank') {
+            window.location.href = url;
+            return null;
+          }
+          return nativeOpen.apply(window, arguments);
+        };
+      })();
+    </script>
+    <link href="assets/application.css" rel="stylesheet" />
+    <script src="assets/ime_mobile_app.js"></script>
+  </head>
+  <body>
+      <div id="main">
+      </div>
+      <div id="modal"></div>
+  </body>
+</html>

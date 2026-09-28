@@ -1,0 +1,8 @@
+{
+  "appId": "com.personal.imeflashcards",
+  "appName": "IME Flashcards",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  }
+}
